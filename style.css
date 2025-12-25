@@ -294,13 +294,13 @@ body {
 
 .slideshow-container {
   display: flex;
-  width: 400%; /* Total width for 4 slides */
-  animation: slide 16s infinite;
+  width: 600%; /* Total width for 4 slides */
+  animation: slide 30s infinite;
 }
 
 .slide {
   width: 25%; /* Each wrapper is 1/4 of the 400% container */
-  height: 400px;
+  height: 600px;
   position: relative; /* This keeps the text inside THIS specific slide */
 }
 
@@ -325,7 +325,7 @@ body {
 .slide-text h2 {
   font-family: 'Playfair Display', serif;
   font-size: 3rem;
-  margin-bottom: 10px;
+  margin-bottom: 20qpx;
   /* Animation for text appearance */
   animation: fadeInText 1s ease-out forwards;
 }
