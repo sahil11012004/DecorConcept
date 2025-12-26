@@ -6,37 +6,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Decor Concept</title>
   <link rel="stylesheet" href="mainHome.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <!-- HEADER -->
-  <header class="header">
-    <div class="header-container">
-      <!-- Logo -->
-      <div class="logo">
-        <img src="./Asset/images/logo.png" alt="Decor Concept Logo">
-      </div>
-
-      <!-- Main Navigation (Left) -->
-      <nav class="nav-left">
-        <ul>
-          <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
-          <li><a href="#"><i class="fas fa-info-circle"></i> About</a></li>
-          <li><a href="#"><i class="fas fa-cogs"></i> Services</a></li>
-        </ul>
-      </nav>
-
-      <!-- Secondary Navigation (Right) -->
-      <nav class="nav-right">
-        <ul>
-          <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
-          <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
-          <li><a href="#"><i class="fas fa-life-ring"></i> Support</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+    <header>
+            <button class="menu-btn left-menu-btn" aria-label="Open main menu">
+        <i class="fas fa-bars"></i>
+    </button>
+        <nav>
+            <ul class="nav-left">
+                <li><a href="./index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="#"><i class="fas fa-cogs"></i> Services</a></li>
+            </ul>
+        </nav>
+        <div class="logo">
+          <a href="./index.html">
+            <img src="./Asset/images/logo.png" alt="Decor Concept Logo">
+            </a>
+        </div>
+        <nav>
+            <ul class="nav-right">
+                <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
+                <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
+                <li><a href="#"><i class="fas fa-life-ring"></i> Support</a></li>
+            </ul>
+        </nav>
+            <button class="menu-btn right-menu-btn" aria-label="Open support menu">
+        <i class="fas fa-bars"></i>
+    </button>
+    </header>
 
   <!-- Main Navigation Bar -->
   <div class="nav-bar">
@@ -186,6 +188,45 @@
       <button id="footerBackToTop"><i class="fas fa-chevron-up"></i></button>
     </div>
   </footer>
+<script>
+  // Mobile menu toggle
+  const leftBtn = document.querySelector('.left-menu-btn');
+  const rightBtn = document.querySelector('.right-menu-btn');
+  const leftNav = document.querySelector('.nav-left');
+  const rightNav = document.querySelector('.nav-right');
+  
+  leftBtn.addEventListener('click', () => {
+    leftNav.classList.toggle('active');
+    rightNav.classList.remove('active');
+  });
+  
+  rightBtn.addEventListener('click', () => {
+    rightNav.classList.toggle('active');
+    leftNav.classList.remove('active');
+  });
+  
+  // Close menu when link clicked
+  document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', () => {
+      leftNav.classList.remove('active');
+      rightNav.classList.remove('active');
+    });
+  });
+  
+  // Back to Top Button
+  document.getElementById('footerBackToTop').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  
+  // Parallax effect (optional)
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const slideshow = document.querySelector('.slideshow-section');
+    if (slideshow && scrolled < 600) {
+      slideshow.style.transform = `translateY(${scrolled * 0.05}px)`;
+    }
+  });
+</script>
 </body>
 
 </html>

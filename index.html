@@ -10,6 +10,9 @@
 </head>
 <body>
     <header>
+            <button class="menu-btn left-menu-btn" aria-label="Open main menu">
+        <i class="fas fa-bars"></i>
+    </button>
         <nav>
             <ul class="nav-left">
                 <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
@@ -27,24 +30,35 @@
                 <li><a href="#"><i class="fas fa-life-ring"></i> Support</a></li>
             </ul>
         </nav>
+            <button class="menu-btn right-menu-btn" aria-label="Open support menu">
+        <i class="fas fa-bars"></i>
+    </button>
     </header>
 
     <main class="content">
         <div class="decor card">
-            <h2>Decor</h2>
             <div class="rotating-images">
-              
                 <div class="image-slide" style="background-image: url('./Asset/images/img1.jpg');">
-                    <div class="overlay"><a href="./MainHome.html">Modern Decor</a></div>
+                    <div class="overlay">
+                        <h2>Decor</h2>
+                        <a href="./MainHome.html" class="btn">Modern Decor</a>
+                    </div>
                 </div>
                 <div class="image-slide" style="background-image: url('./Asset/images/img2.jpg');">
-                    <div class="overlay"><a href="./MainHome.html">Elegant Designs</a></div>
+                    <div class="overlay">
+                        <h2>Decor</h2>
+                        <a href="./MainHome.html" class="btn">Elegant Designs</a>
+                    </div>
                 </div>
                 <div class="image-slide" style="background-image: url('./Asset/images/img3.jpg');">
-                    <div class="overlay"><a href="./MainHome.html">Timeless Styles</a></div>
+                    <div class="overlay">
+                        <h2>Decor</h2>
+                        <a href="./MainHome.html" class="btn">Timeless Styles</a>
+                    </div>
                 </div>
             </div>
         </div>
+
 
         <div class="concept card">
             <h2>Concept</h2>
@@ -150,6 +164,104 @@
             startRotation('.concept .rotating-images');
         });
     </script>
+<script>
+    // NUCLEAR FIX for menu visibility
+    const leftBtn = document.querySelector('.left-menu-btn');
+    const rightBtn = document.querySelector('.right-menu-btn');
+    const leftNav = document.querySelector('.nav-left');
+    const rightNav = document.querySelector('.nav-right');
+    const body = document.body;
     
+    // Function to force menu to top
+    function forceMenuToTop() {
+        // Remove any conflicting styles
+        document.querySelectorAll('*').forEach(el => {
+            if (!el.classList.contains('nav-left') && 
+                !el.classList.contains('nav-right') && 
+                !el.classList.contains('menu-btn') &&
+                !el.classList.contains('logo')) {
+                el.style.zIndex = '1';
+            }
+        });
+        
+        // Force menus to absolute top
+        if (leftNav) leftNav.style.zIndex = '99998';
+        if (rightNav) rightNav.style.zIndex = '99998';
+        if (leftBtn) leftBtn.style.zIndex = '99999';
+        if (rightBtn) rightBtn.style.zIndex = '99999';
+    }
+    
+    leftBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        forceMenuToTop();
+        
+        leftNav.classList.toggle('active');
+        rightNav.classList.remove('active');
+        body.classList.toggle('menu-open', leftNav.classList.contains('active') || rightNav.classList.contains('active'));
+        
+        // Emergency style injection
+        leftNav.style.display = 'block';
+        leftNav.style.visibility = 'visible';
+        leftNav.style.opacity = '1';
+    });
+    
+    rightBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        forceMenuToTop();
+        
+        rightNav.classList.toggle('active');
+        leftNav.classList.remove('active');
+        body.classList.toggle('menu-open', leftNav.classList.contains('active') || rightNav.classList.contains('active'));
+        
+        // Emergency style injection
+        rightNav.style.display = 'block';
+        rightNav.style.visibility = 'visible';
+        rightNav.style.opacity = '1';
+    });
+    
+    // Close menu when link clicked
+    document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.stopPropagation();
+            leftNav.classList.remove('active');
+            rightNav.classList.remove('active');
+            body.classList.remove('menu-open');
+        });
+    });
+    
+    // Close menu when clicking on overlay or outside
+    document.addEventListener('click', (e) => {
+        const isMenu = e.target.closest('nav') || e.target.closest('.menu-btn');
+        if (!isMenu) {
+            leftNav.classList.remove('active');
+            rightNav.classList.remove('active');
+            body.classList.remove('menu-open');
+        }
+    });
+    
+    // Prevent body scroll when menu is open
+    document.addEventListener('DOMContentLoaded', () => {
+        const observer = new MutationObserver(() => {
+            if (body.classList.contains('menu-open')) {
+                body.style.overflow = 'hidden';
+            } else {
+                body.style.overflow = '';
+            }
+        });
+        
+        observer.observe(body, { attributes: true, attributeFilter: ['class'] });
+    });
+    
+    // Back to Top Button
+    if (document.getElementById('footerBackToTop')) {
+        document.getElementById('footerBackToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+    
+    // Initialize on load
+    window.addEventListener('load', forceMenuToTop);
+</script>
+
 </body>
 </html>
