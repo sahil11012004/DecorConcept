@@ -12,7 +12,7 @@
 
 <body>
   <!-- HEADER -->
-    <header>
+    <!-- <header>
             <button class="menu-btn left-menu-btn" aria-label="Open main menu">
         <i class="fas fa-bars"></i>
     </button>
@@ -38,8 +38,8 @@
             <button class="menu-btn right-menu-btn" aria-label="Open support menu">
         <i class="fas fa-bars"></i>
     </button>
-    </header>
-
+    </header> -->
+<div id="header-container"></div>
   <!-- Main Navigation Bar -->
   <!-- <div class="nav-bar">
     <nav class="categories">
@@ -188,6 +188,123 @@
       <button id="footerBackToTop"><i class="fas fa-chevron-up"></i></button>
     </div>
   </footer>
+  <script>
+        // Load header from header.html file
+        fetch('header.html')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Header file not found');
+                }
+                return response.text();
+            })
+            .then(headerHTML => {
+                // Insert header
+                document.getElementById('header-container').innerHTML = headerHTML;
+                
+                // Initialize menu functionality after header loads
+                initializeMenu();
+                
+                // Initialize header-specific scripts
+                initializeHeaderScripts();
+            })
+            .catch(error => {
+                console.error('Error loading header:', error);
+                // Fallback: Show a basic header if file not found
+                document.getElementById('header-container').innerHTML = `
+                    <header style="background: #2d2d2d; padding: 20px; text-align: center;">
+                        <a href="./index.html" style="color: #d4af37; font-size: 24px; text-decoration: none;">
+                            Decor Concept
+                        </a>
+                    </header>
+                `;
+            });
+        
+        function initializeMenu() {
+            // Your existing menu JavaScript
+            const leftBtn = document.querySelector('.left-menu-btn');
+            const rightBtn = document.querySelector('.right-menu-btn');
+            const leftNav = document.querySelector('.nav-left');
+            const rightNav = document.querySelector('.nav-right');
+            const body = document.body;
+            
+            if (!leftBtn || !rightBtn || !leftNav || !rightNav) {
+                console.warn('Menu elements not found');
+                return;
+            }
+            
+            // Function to force menu to top
+            function forceMenuToTop() {
+                document.querySelectorAll('*').forEach(el => {
+                    if (!el.classList.contains('nav-left') && 
+                        !el.classList.contains('nav-right') && 
+                        !el.classList.contains('menu-btn') &&
+                        !el.classList.contains('logo')) {
+                        el.style.zIndex = '1';
+                    }
+                });
+                
+                if (leftNav) leftNav.style.zIndex = '99998';
+                if (rightNav) rightNav.style.zIndex = '99998';
+                if (leftBtn) leftBtn.style.zIndex = '99999';
+                if (rightBtn) rightBtn.style.zIndex = '99999';
+            }
+            
+            leftBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                forceMenuToTop();
+                
+                leftNav.classList.toggle('active');
+                rightNav.classList.remove('active');
+                body.classList.toggle('menu-open', leftNav.classList.contains('active') || rightNav.classList.contains('active'));
+                
+                leftNav.style.display = 'block';
+                leftNav.style.visibility = 'visible';
+                leftNav.style.opacity = '1';
+            });
+            
+            rightBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                forceMenuToTop();
+                
+                rightNav.classList.toggle('active');
+                leftNav.classList.remove('active');
+                body.classList.toggle('menu-open', leftNav.classList.contains('active') || rightNav.classList.contains('active'));
+                
+                rightNav.style.display = 'block';
+                rightNav.style.visibility = 'visible';
+                rightNav.style.opacity = '1';
+            });
+            
+            // Close menu when link clicked
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    leftNav.classList.remove('active');
+                    rightNav.classList.remove('active');
+                    body.classList.remove('menu-open');
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                const isMenu = e.target.closest('nav') || e.target.closest('.menu-btn');
+                if (!isMenu) {
+                    leftNav.classList.remove('active');
+                    rightNav.classList.remove('active');
+                    body.classList.remove('menu-open');
+                }
+            });
+            
+            // Initialize on load
+            forceMenuToTop();
+        }
+        
+        function initializeHeaderScripts() {
+            // Add any header-specific scripts here
+            console.log('Header loaded and initialized');
+        }
+    </script>
+
 <script>
   // Mobile menu toggle
   const leftBtn = document.querySelector('.left-menu-btn');

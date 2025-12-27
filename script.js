@@ -1,5 +1,5 @@
 // SELECT ALL SLIDES
-let slides = document.querySelectorAll(".slide");
+let slides = document.querySelectorAll(".image-slide");
 let currentIndex = 0; // Start with the first image
 
 // FUNCTION TO SHOW A SPECIFIC SLIDE

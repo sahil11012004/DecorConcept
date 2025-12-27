@@ -30,32 +30,7 @@ body {
 }
 
 /* ================= HEADER ================= */
-header {
-  background: linear-gradient(90deg, var(--charcoal), var(--charcoal-light));
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: clamp(1px, 2vw, 5px) clamp(20px, 5vw, 80px);
-  min-height: 90px;
-  position: relative;
-  z-index: 1000;
-  box-shadow: var(--shadow-lg);
-  overflow: visible;
-  clip-path: polygon(
-      0% 0%, 100% 0%, 100% 85%,
-      72% 85%, 68% 100%, 32% 100%,
-      28% 85%, 0% 85%
-  );
-}
 
-header::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, #e4dcc9, #000);
-  z-index: -1;
-  clip-path: inherit;
-}
 
 /* ================= LOGO ================= */
 .logo {

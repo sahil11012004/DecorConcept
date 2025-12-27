@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us | Decor Concept</title>
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -42,34 +43,9 @@
 
         /* ==================== HEADER - MATCHING CONTACT PAGE ==================== */
 /* ==================== HEADER - SYNCHRONIZED ==================== */
-header {
-    background: linear-gradient(90deg, var(--charcoal), var(--charcoal-light));
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: clamp(1px, 2vw, 5px) clamp(20px, 5vw, 80px);
-    min-height: 90px; /* Matches Index */
-    position: relative;
-    z-index: 1000;
-    box-shadow: var(--shadow-lg);
-    overflow: visible;
-    /* Precise clip-path from your index page */
-    clip-path: polygon(
-        0% 0%, 100% 0%, 100% 85%,
-        72% 85%, 68% 100%, 32% 100%,
-        28% 85%, 0% 85%
-    );
-}
 
-/* The dark underlying shape effect from index */
-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, #e4dcc9, #000);
-    z-index: -1;
-    clip-path: inherit;
-}
+
+
 
 nav ul {
     display: flex;
@@ -843,7 +819,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 <body>
     
     <!-- HEADER - MATCHING CONTACT PAGE -->
-    <header>
+    <!-- <header>
         <button class="menu-btn left-menu-btn" aria-label="Open main menu">
             <i class="fas fa-bars"></i>
         </button>
@@ -869,8 +845,9 @@ nav a:hover::after, nav a.active::after { width: 100%; }
         <button class="menu-btn right-menu-btn" aria-label="Open support menu">
             <i class="fas fa-bars"></i>
         </button>
-    </header>
+    </header> -->
 
+<div id="header-container"></div>
     <!-- About page content remains the same -->
     <section class="about-hero">
         <div class="hero-content">
@@ -1007,65 +984,243 @@ nav a:hover::after, nav a.active::after { width: 100%; }
             <button id="footerBackToTop" title="Back to Top"><i class="fas fa-chevron-up"></i></button>
         </div>
     </footer>
+ <script>
+        // Load header from header.html file
+        fetch('header.html')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Header file not found');
+                }
+                return response.text();
+            })
+            .then(headerHTML => {
+                // Insert header
+                document.getElementById('header-container').innerHTML = headerHTML;
+                
+                // Initialize menu functionality after header loads
+                initializeMenu();
+                
+                // Initialize header-specific scripts
+                initializeHeaderScripts();
+            })
+            .catch(error => {
+                console.error('Error loading header:', error);
+                // Fallback: Show a basic header if file not found
+                document.getElementById('header-container').innerHTML = `
+                    <header style="background: #2d2d2d; padding: 20px; text-align: center;">
+                        <a href="./index.html" style="color: #d4af37; font-size: 24px; text-decoration: none;">
+                            Decor Concept
+                        </a>
+                    </header>
+                `;
+            });
+        
+        function initializeMenu() {
+            // Your existing menu JavaScript
+            const leftBtn = document.querySelector('.left-menu-btn');
+            const rightBtn = document.querySelector('.right-menu-btn');
+            const leftNav = document.querySelector('.nav-left');
+            const rightNav = document.querySelector('.nav-right');
+            const body = document.body;
+            
+            if (!leftBtn || !rightBtn || !leftNav || !rightNav) {
+                console.warn('Menu elements not found');
+                return;
+            }
+            
+            // Function to force menu to top
+            function forceMenuToTop() {
+                document.querySelectorAll('*').forEach(el => {
+                    if (!el.classList.contains('nav-left') && 
+                        !el.classList.contains('nav-right') && 
+                        !el.classList.contains('menu-btn') &&
+                        !el.classList.contains('logo')) {
+                        el.style.zIndex = '1';
+                    }
+                });
+                
+                if (leftNav) leftNav.style.zIndex = '99998';
+                if (rightNav) rightNav.style.zIndex = '99998';
+                if (leftBtn) leftBtn.style.zIndex = '99999';
+                if (rightBtn) rightBtn.style.zIndex = '99999';
+            }
+            
+            leftBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                forceMenuToTop();
+                
+                leftNav.classList.toggle('active');
+                rightNav.classList.remove('active');
+                body.classList.toggle('menu-open', leftNav.classList.contains('active') || rightNav.classList.contains('active'));
+                
+                leftNav.style.display = 'block';
+                leftNav.style.visibility = 'visible';
+                leftNav.style.opacity = '1';
+            });
+            
+            rightBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                forceMenuToTop();
+                
+                rightNav.classList.toggle('active');
+                leftNav.classList.remove('active');
+                body.classList.toggle('menu-open', leftNav.classList.contains('active') || rightNav.classList.contains('active'));
+                
+                rightNav.style.display = 'block';
+                rightNav.style.visibility = 'visible';
+                rightNav.style.opacity = '1';
+            });
+            
+            // Close menu when link clicked
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    leftNav.classList.remove('active');
+                    rightNav.classList.remove('active');
+                    body.classList.remove('menu-open');
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                const isMenu = e.target.closest('nav') || e.target.closest('.menu-btn');
+                if (!isMenu) {
+                    leftNav.classList.remove('active');
+                    rightNav.classList.remove('active');
+                    body.classList.remove('menu-open');
+                }
+            });
+            
+            // Initialize on load
+            forceMenuToTop();
+        }
+        
+        function initializeHeaderScripts() {
+            // Add any header-specific scripts here
+            console.log('Header loaded and initialized');
+        }
+    </script>
+    <!-- Footer HTML stays here -->
 
-<script>
-    // Mobile menu toggle - FIXED VERSION
-    const leftBtn = document.querySelector('.left-menu-btn');
-    const rightBtn = document.querySelector('.right-menu-btn');
-    const leftNav = document.querySelector('.nav-left');
-    const rightNav = document.querySelector('.nav-right');
-    const body = document.body;
-    
-    function closeAllMenus() {
-        leftNav.classList.remove('active');
-        rightNav.classList.remove('active');
-        body.classList.remove('menu-open');
-    }
-    
-    leftBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        // Toggle left, close right
-        leftNav.classList.toggle('active');
-        rightNav.classList.remove('active');
-        body.classList.toggle('menu-open', leftNav.classList.contains('active'));
-    });
-    
-    rightBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        // Toggle right, close left
-        rightNav.classList.toggle('active');
-        leftNav.classList.remove('active');
-        body.classList.toggle('menu-open', rightNav.classList.contains('active'));
-    });
-    
-    // Close menu when clicking on links
-    document.querySelectorAll('nav a').forEach(link => {
-        link.addEventListener('click', () => {
-            closeAllMenus();
+    <!-- Header loading JavaScript (KEEP THIS) -->
+    <script>
+        // Load header from header.html file
+        fetch('header.html')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Header file not found');
+                }
+                return response.text();
+            })
+            .then(headerHTML => {
+                document.getElementById('header-container').innerHTML = headerHTML;
+                console.log('Header loaded successfully');
+            })
+            .catch(error => {
+                console.error('Error loading header:', error);
+            });
+    </script>
+
+    <!-- Menu JavaScript (ONLY THIS BLOCK) -->
+    <script>
+        // Mobile menu functionality - ONLY THIS BLOCK
+        document.addEventListener('DOMContentLoaded', function() {
+            const leftBtn = document.querySelector('.left-menu-btn');
+            const rightBtn = document.querySelector('.right-menu-btn');
+            const leftNav = document.querySelector('.nav-left');
+            const rightNav = document.querySelector('.nav-right');
+            const body = document.body;
+            
+            // Check if elements exist
+            if (!leftBtn || !rightBtn || !leftNav || !rightNav) {
+                console.log('Menu elements not found yet - waiting for header load');
+                return;
+            }
+            
+            // Function to close all menus
+            function closeAllMenus() {
+                leftNav.classList.remove('active');
+                rightNav.classList.remove('active');
+                body.classList.remove('menu-open');
+            }
+            
+            // Left menu button click
+            leftBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                
+                // Toggle left menu, close right menu
+                const isLeftActive = leftNav.classList.toggle('active');
+                rightNav.classList.remove('active');
+                
+                // Update body class
+                if (isLeftActive || rightNav.classList.contains('active')) {
+                    body.classList.add('menu-open');
+                } else {
+                    body.classList.remove('menu-open');
+                }
+            });
+            
+            // Right menu button click
+            rightBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                
+                // Toggle right menu, close left menu
+                const isRightActive = rightNav.classList.toggle('active');
+                leftNav.classList.remove('active');
+                
+                // Update body class
+                if (isRightActive || leftNav.classList.contains('active')) {
+                    body.classList.add('menu-open');
+                } else {
+                    body.classList.remove('menu-open');
+                }
+            });
+            
+            // Close menu when clicking on links
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('nav a')) {
+                    closeAllMenus();
+                }
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                const isMenu = e.target.closest('nav') || 
+                              e.target.closest('.menu-btn') ||
+                              e.target.closest('.nav-left') ||
+                              e.target.closest('.nav-right');
+                if (!isMenu) {
+                    closeAllMenus();
+                }
+            });
+            
+            // Back to Top Button
+            const backToTopBtn = document.getElementById('footerBackToTop');
+            if (backToTopBtn) {
+                backToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+            
+            // Show menu buttons on mobile
+            function checkMobileMenu() {
+                if (window.innerWidth <= 768) {
+                    if (leftBtn) leftBtn.style.display = 'block';
+                    if (rightBtn) rightBtn.style.display = 'block';
+                } else {
+                    if (leftBtn) leftBtn.style.display = 'none';
+                    if (rightBtn) rightBtn.style.display = 'none';
+                }
+            }
+            
+            // Initial check
+            checkMobileMenu();
+            window.addEventListener('resize', checkMobileMenu);
+            
+            console.log('Menu JavaScript initialized successfully');
         });
-    });
-    
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-        const isMenu = e.target.closest('nav') || e.target.closest('.menu-btn');
-        if (!isMenu) {
-            closeAllMenus();
-        }
-    });
-    
-    // Back to Top Button
-    document.getElementById('footerBackToTop').addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-    
-    // Initial setup
-    window.addEventListener('load', () => {
-        // Ensure menu buttons are visible on mobile
-        if (window.innerWidth <= 768) {
-            leftBtn.style.display = 'block';
-            rightBtn.style.display = 'block';
-        }
-    });
-</script>
+    </script>
+</body>
+</html>
 </body>
 </html>

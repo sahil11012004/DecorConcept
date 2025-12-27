@@ -26,38 +26,6 @@
             padding: 0 20px;
         }
 
-        .contact-header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 0 15px;
-        }
-
-        .contact-header h1 {
-            font-size: 2.5rem;
-            color: var(--charcoal);
-            margin-bottom: 15px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .contact-header h1::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--gold), transparent);
-        }
-
-        .contact-header p {
-            font-size: 1.1rem;
-            color: var(--charcoal-light);
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
 
         .contact-container {
             display: grid;
@@ -480,106 +448,10 @@
             }
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .contact-page {
-                margin: 20px auto;
-                padding: 0 15px;
-            }
-
-            .contact-header h1 {
-                font-size: 2rem;
-            }
-
-            .contact-header p {
-                font-size: 1rem;
-            }
-
-            .contact-container {
-                gap: 25px;
-            }
-
-            .contact-form,
-            .info-card {
-                padding: 20px;
-            }
-
-            .contact-form h2 {
-                font-size: 1.3rem;
-            }
-
-            .map-overlay {
-                position: relative;
-                bottom: auto;
-                left: auto;
-                max-width: 100%;
-                margin: 0;
-                border-radius: 0;
-                box-shadow: none;
-            }
-
-            .map-container {
-                height: 250px;
-            }
-
-            .contact-methods {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                margin-top: 30px;
-                margin-bottom: 40px;
-            }
-
-            .faq-section {
-                margin: 40px 0 20px;
-            }
-
-            .faq-section h2 {
-                font-size: 1.5rem;
-                margin-bottom: 20px;
-            }
-
-            .faq-question {
-                padding: 15px;
-            }
-
-            .faq-question h3 {
-                font-size: 0.95rem;
-            }
-
-            .faq-answer {
-                padding: 0 15px;
-            }
-
-            .faq-answer.active {
-                padding: 0 15px 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .contact-header h1 {
-                font-size: 1.8rem;
-            }
-
-            .contact-header p {
-                font-size: 0.95rem;
-            }
-
-            .method-card {
-                padding: 25px 15px;
-            }
-
-            .method-card h3 {
-                font-size: 1rem;
-            }
-
-            .method-card p {
-                font-size: 0.85rem;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Header
     <header>
         <button class="menu-btn left-menu-btn" aria-label="Open main menu">
             <i class="fas fa-bars"></i>
@@ -606,8 +478,8 @@
         <button class="menu-btn right-menu-btn" aria-label="Open support menu">
             <i class="fas fa-bars"></i>
         </button>
-    </header>
-
+    </header> -->
+<div id="header-container"></div>
     <!-- Contact Page Content -->
     <main class="contact-page">
         <div class="contact-header">
@@ -823,6 +695,122 @@
             <button id="footerBackToTop" title="Back to Top"><i class="fas fa-chevron-up"></i></button>
         </div>
     </footer>
+<script>
+        // Load header from header.html file
+        fetch('header.html')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Header file not found');
+                }
+                return response.text();
+            })
+            .then(headerHTML => {
+                // Insert header
+                document.getElementById('header-container').innerHTML = headerHTML;
+                
+                // Initialize menu functionality after header loads
+                initializeMenu();
+                
+                // Initialize header-specific scripts
+                initializeHeaderScripts();
+            })
+            .catch(error => {
+                console.error('Error loading header:', error);
+                // Fallback: Show a basic header if file not found
+                document.getElementById('header-container').innerHTML = `
+                    <header style="background: #2d2d2d; padding: 20px; text-align: center;">
+                        <a href="./index.html" style="color: #d4af37; font-size: 24px; text-decoration: none;">
+                            Decor Concept
+                        </a>
+                    </header>
+                `;
+            });
+        
+        function initializeMenu() {
+            // Your existing menu JavaScript
+            const leftBtn = document.querySelector('.left-menu-btn');
+            const rightBtn = document.querySelector('.right-menu-btn');
+            const leftNav = document.querySelector('.nav-left');
+            const rightNav = document.querySelector('.nav-right');
+            const body = document.body;
+            
+            if (!leftBtn || !rightBtn || !leftNav || !rightNav) {
+                console.warn('Menu elements not found');
+                return;
+            }
+            
+            // Function to force menu to top
+            function forceMenuToTop() {
+                document.querySelectorAll('*').forEach(el => {
+                    if (!el.classList.contains('nav-left') && 
+                        !el.classList.contains('nav-right') && 
+                        !el.classList.contains('menu-btn') &&
+                        !el.classList.contains('logo')) {
+                        el.style.zIndex = '1';
+                    }
+                });
+                
+                if (leftNav) leftNav.style.zIndex = '99998';
+                if (rightNav) rightNav.style.zIndex = '99998';
+                if (leftBtn) leftBtn.style.zIndex = '99999';
+                if (rightBtn) rightBtn.style.zIndex = '99999';
+            }
+            
+            leftBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                forceMenuToTop();
+                
+                leftNav.classList.toggle('active');
+                rightNav.classList.remove('active');
+                body.classList.toggle('menu-open', leftNav.classList.contains('active') || rightNav.classList.contains('active'));
+                
+                leftNav.style.display = 'block';
+                leftNav.style.visibility = 'visible';
+                leftNav.style.opacity = '1';
+            });
+            
+            rightBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                forceMenuToTop();
+                
+                rightNav.classList.toggle('active');
+                leftNav.classList.remove('active');
+                body.classList.toggle('menu-open', leftNav.classList.contains('active') || rightNav.classList.contains('active'));
+                
+                rightNav.style.display = 'block';
+                rightNav.style.visibility = 'visible';
+                rightNav.style.opacity = '1';
+            });
+            
+            // Close menu when link clicked
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    leftNav.classList.remove('active');
+                    rightNav.classList.remove('active');
+                    body.classList.remove('menu-open');
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                const isMenu = e.target.closest('nav') || e.target.closest('.menu-btn');
+                if (!isMenu) {
+                    leftNav.classList.remove('active');
+                    rightNav.classList.remove('active');
+                    body.classList.remove('menu-open');
+                }
+            });
+            
+            // Initialize on load
+            forceMenuToTop();
+        }
+        
+        function initializeHeaderScripts() {
+            // Add any header-specific scripts here
+            console.log('Header loaded and initialized');
+        }
+    </script>
 
     <script>
         // Mobile menu toggle

@@ -1,0 +1,117 @@
+    <footer class="theme-footer">
+        <div class="footer-top">
+            <div class="footer-section brand-info">
+                <div class="footer-logo">
+                    <img src="./Asset/images/logo.png" alt="Decor Concept">
+                </div>
+                <p>We transform spaces with innovative interior design and unique concept ideas. Our team is dedicated to creating personalized environments that reflect your taste.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>OTHER PAGES</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms & Condition</a></li>
+                    <li><a href="#">Ideas</a></li>
+                    <li><a href="#">Trade Programs</a></li>
+                    <li><a href="#">Openings</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>OUR SERVICES</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Residential Design</a></li>
+                    <li><a href="#">Office Design</a></li>
+                    <li><a href="#">Hospital Design</a></li>
+                    <li><a href="#">Commercial Design</a></li>
+                    <li><a href="#">Concept Ideas</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section contact-details">
+                <h4>CONTACT US</h4>
+                <p>Office No : 10, Thane, Mumbai, India, 421203</p>
+                <p><span class="highlight phone">Phone:</span> +91 8828812333</p>
+                <p><span class="highlight wa">WhatsApp:</span> +91 8828812333</p>
+                <p><span class="highlight email">Email:</span> info@decorconcept.in</p>
+                <p><span class="highlight web">Web:</span> https://decorconcept.in</p>
+            </div>
+        </div>
+
+        <div class="footer-base">
+            <p>&copy; Copyright 2024 - Decor Concept</p>
+            <div class="social-box">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-x-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-skype"></i></a>
+            </div>
+            <button id="footerBackToTop" title="Back to Top"><i class="fas fa-chevron-up"></i></button>
+        </div>
+    </footer>
+    <style>
+            /* ================= FOOTER ================= */
+    .theme-footer {
+        background: linear-gradient(135deg, var(--gold-light), var(--ivory));
+        border-top: 1px solid #e6dcc7;
+        padding: 80px 60px 30px;
+        margin-top: 50px;
+    }
+
+    .footer-top {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 40px;
+        max-width: 1400px;
+        margin: auto;
+    }
+
+    .footer-logo img {
+        height: 140px;
+        margin-bottom: 20px;
+        filter: brightness(0.5);
+        transition: filter .3s ease;
+    }
+
+    .footer-logo img:hover { filter: brightness(1); }
+
+    .footer-section h4 { font-size: 16px; margin-bottom: 15px; font-weight: 600; }
+    .footer-links { list-style: none; padding: 0; }
+    .footer-links li { margin-bottom: 10px; }
+    .footer-links a { text-decoration: none; color: var(--charcoal); transition: color .3s ease; }
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-base {
+        max-width: 1400px;
+        margin: 60px auto 0;
+        padding-top: 30px;
+        border-top: 1px solid #f0e6d2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .social-box a { color: var(--charcoal); margin-left: 15px; font-size: 1.5rem; transition: var(--transition); }
+    .social-box a:hover { color: var(--gold); transform: translateY(-3px); }
+
+    #footerBackToTop {
+        background: var(--gold);
+        color: white;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: var(--transition);
+    }
+    #footerBackToTop:hover {
+        background: var(--gold-dark);
+        transform: translateY(-5px);
+    }
+
+    </style>
